@@ -22,6 +22,16 @@ exports.deleteCategory = async (req, res) => {
    res.redirect('/');
 };
 
+exports.editCategory = async (req, res) => {
+   const { id } = req.params;
+   const { name, slug } = req.body;
+   await pool.query(
+      'UPDATE categories SET name = $1, slug = $2 WHERE id = $3',
+      [name, slug, id]
+   );
+   res.redirect('/');
+};
+
 const pool = require('../db/pool');
 
 exports.confirmCategoryDeletion = async (req, res) => {

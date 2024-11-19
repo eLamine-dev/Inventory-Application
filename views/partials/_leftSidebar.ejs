@@ -1,0 +1,9 @@
+<h5>Categories</h5>
+<button class="primary" onclick="openModal('addCategoryModal')">
+   Add Category
+</button>
+<ul>
+   <% categories.forEach(category => { %>
+   <li><%= category.name %></li>
+   <% }); %>
+</ul>

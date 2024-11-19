@@ -20,3 +20,19 @@ exports.addManufacturer = async (req, res) => {
       res.status(500).send('Internal Server Error');
    }
 };
+
+exports.editManufacturer = async (req, res) => {
+   const { id } = req.params;
+   const { name } = req.body;
+   await pool.query('UPDATE manufacturers SET name = $1 WHERE id = $2', [
+      name,
+      id,
+   ]);
+   res.redirect('/');
+};
+
+exports.deleteManufacturer = async (req, res) => {
+   const { id } = req.params;
+   await pool.query('DELETE FROM manufacturers WHERE id = $1', [id]);
+   res.redirect('/');
+};
