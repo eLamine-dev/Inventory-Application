@@ -1,6 +1,6 @@
 const express = require('express');
 const {
-   getAllManufacturers,
+   getManufacturers,
    addManufacturer,
    confirmManufacturerDeletion,
    handleManufacturerDeletion,
@@ -10,10 +10,10 @@ const {
 
 const router = express.Router();
 
-router.get('/', getAllManufacturers);
+router.get('/', getManufacturers);
 router.post('/', addManufacturer);
-router.get('/confirm-deletion/:id', confirmManufacturerDeletion);
-router.post('/handle-deletion', handleManufacturerDeletion);
+// router.get('/confirm-deletion/:id', confirmManufacturerDeletion);
+// router.post('/handle-deletion', handleManufacturerDeletion);
 router.put('/:id', editManufacturer);
 router.delete('/:id', deleteManufacturer);
 

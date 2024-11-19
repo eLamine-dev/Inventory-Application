@@ -1,6 +1,6 @@
 const express = require('express');
 const {
-   getAllItems,
+   getItems,
    addItem,
    editItem,
    deleteItem,
@@ -10,7 +10,7 @@ const {
 
 const router = express.Router();
 
-router.get('/', getAllItems);
+router.get('/', getItems);
 router.post('/', addItem);
 router.put('/:id', editItem);
 router.delete('/:id', deleteItem);

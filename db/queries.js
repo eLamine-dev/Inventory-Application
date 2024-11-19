@@ -3,7 +3,7 @@ const pool = require('./pool');
 // Category Queries
 exports.getCategories = async () => {
    const res = await pool.query('SELECT * FROM categories');
-   return res.rows;
+   return res;
 };
 
 exports.createCategory = async (name, slug) => {

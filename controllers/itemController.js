@@ -1,9 +1,10 @@
 const { getItems, createItem } = require('../db/queries');
 
-exports.getAllItems = async (req, res) => {
+exports.getItems = async (req, res, next) => {
    try {
       const items = await getItems();
-      res.render('items/index', { items });
+      req.items = items.rows;
+      next();
    } catch (err) {
       console.error('Error fetching items:', err.message);
       res.status(500).send('Internal Server Error');

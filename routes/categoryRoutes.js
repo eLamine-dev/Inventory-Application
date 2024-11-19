@@ -1,6 +1,6 @@
 const express = require('express');
 const {
-   getAllCategories,
+   getCategories,
    addCategory,
    editCategory,
    deleteCategory,
@@ -10,7 +10,7 @@ const {
 
 const router = express.Router();
 
-router.get('/', getAllCategories);
+router.get('/', getCategories);
 router.post('/', addCategory);
 router.get('/confirm-deletion/:id', confirmCategoryDeletion);
 router.post('/handle-deletion', handleCategoryDeletion);

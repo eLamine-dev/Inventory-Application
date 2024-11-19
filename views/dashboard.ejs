@@ -1,33 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
    <head>
-      <title>Inventory Management</title>
-
-      <script src="/scripts.js"></script>
-      <link rel="stylesheet" href="/styles.css" />
+      <title>Dashboard</title>
+      <!-- <link rel="stylesheet" href="/styles.css" /> -->
+      <!-- <script src="/scripts.js"></script> -->
    </head>
    <body>
-      <div class="d-flex">
-         <!-- Left Sidebar -->
-         <aside class="left-sidebar bg-light border-end">
-            <% include partials/_leftSidebar %>
-         </aside>
-
-         <!-- Main Workspace -->
-         <main class="main-workspace flex-grow-1 p-3">
-            <% include partials/_partsTable %>
-         </main>
-
-         <!-- Right Sidebar -->
-         <aside class="right-sidebar bg-light border-start">
-            <% include partials/_rightSidebar %>
-         </aside>
-      </div>
-
-      <!-- Modals -->
-      <% include modals/_addCategory %> <% include modals/_editCategory %> <%
-      include modals/_addManufacturer %> <% include modals/_editManufacturer %>
-      <% include modals/_addPart %> <% include modals/_editPart %> <% include
-      modals/_addStock %> <% include modals/_removeStock %>
+      <ul>
+         <% categories.forEach(category => { %>
+         <li><%= category.name %></li>
+         <% }); %>
+      </ul>
    </body>
 </html>
