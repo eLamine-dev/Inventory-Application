@@ -1,0 +1,29 @@
+<% if (selectedItem) { %>
+<h5>Part Details</h5>
+<div>
+   <button
+      class="primary"
+      onclick="openModal('editPartDetailsModal', '<%= selectedItem.id %>')"
+   >
+      Edit Details
+   </button>
+   <button
+      class="success"
+      onclick="openModal('addStockModal', '<%= selectedItem.id %>')"
+   >
+      Add Stock
+   </button>
+   <button
+      class="danger"
+      onclick="openModal('removeStockModal', '<%= selectedItem.id %>')"
+   >
+      Remove Stock
+   </button>
+</div>
+<p><strong>Name:</strong> <%= selectedItem.name %></p>
+<p><strong>Stock:</strong> <%= selectedItem.stock %></p>
+<p><strong>Price:</strong> $<%= selectedItem.price %></p>
+
+<% } else { %>
+<p>Select a part to view its details.</p>
+<% } %>

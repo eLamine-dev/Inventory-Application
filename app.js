@@ -5,6 +5,7 @@ const categoryRoutes = require('./routes/categoryRoutes');
 const manufacturerRoutes = require('./routes/manufacturerRoutes');
 const itemRoutes = require('./routes/itemRoutes');
 const dashboardRoute = require('./routes/dashboardRoute');
+var path = require('path');
 
 const bodyParser = require('body-parser');
 require('dotenv').config();
@@ -15,6 +16,7 @@ app.use(bodyParser.json());
 app.use(methodOverride('_method'));
 app.use(express.static('public'));
 app.set('view engine', 'ejs');
+// app.set('views', path.join(__dirname, 'views'));
 
 app.locals.pool = pool;
 

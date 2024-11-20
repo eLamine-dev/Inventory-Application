@@ -1,0 +1,17 @@
+<h5>Categories</h5>
+<div>
+   <button class="primary" onclick="openModal('addCategoryModal')">
+      Add Category
+   </button>
+   <button class="primary" onclick="openModal('editCategoryModal')">
+      Edit Category
+   </button>
+   <button class="danger" onclick="openModal('deleteCategoryModal')">
+      Delete Category
+   </button>
+</div>
+<ul>
+   <% categories.forEach(category => { %>
+   <li><%= category.name %></li>
+   <% }); %>
+</ul>

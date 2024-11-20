@@ -42,7 +42,7 @@ exports.getAllItems = async () => {
       `SELECT items.*, categories.name AS category_name, manufacturers.name AS manufacturer_name 
      FROM items
      LEFT JOIN categories ON items.category_id = categories.id
-     LEFT JOIN manufacturers ON items.manufacturer_id = manufacturers.id`
+     LEFT JOIN manufacturers ON items.manufacturer_id = manufacturers.id LIMIT 20`
    );
    return res.rows;
 };

@@ -1,0 +1,33 @@
+<h3>Parts List</h3>
+<div>
+   <button class="success" onclick="openModal('addPartModal')">Add Part</button>
+   <button
+      class="danger"
+      onclick="openModal('deletePartModal', '<%= selectedItem %>')"
+   >
+      Delete
+   </button>
+</div>
+<table>
+   <thead>
+      <tr>
+         <th onclick="sortTable(0)">Part Name</th>
+         <th>Category</th>
+         <th>Manufacturer</th>
+         <th onclick="sortTable(1)">Stock</th>
+         <th onclick="sortTable(2)">Price</th>
+         <th>Actions</th>
+      </tr>
+   </thead>
+   <tbody>
+      <% items.forEach(item => { %>
+      <tr data-id="<%= item.id %>" onclick="selectItem('<%= item.id %>')">
+         <td><%= item.name %></td>
+         <td><%= item.category_name %></td>
+         <td><%= item.manufacturer_name %></td>
+         <td><%= item.stock %></td>
+         <td>$<%= item.price %></td>
+      </tr>
+      <% }); %>
+   </tbody>
+</table>
