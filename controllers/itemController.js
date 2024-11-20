@@ -1,9 +1,9 @@
-const { getItems, createItem } = require('../db/queries');
+const { getAllItems, createItem } = require('../db/queries');
 
 exports.getItems = async (req, res, next) => {
    try {
-      const items = await getItems();
-      req.items = items.rows;
+      const items = await getAllItems();
+      req.items = items;
       next();
    } catch (err) {
       console.error('Error fetching items:', err.message);

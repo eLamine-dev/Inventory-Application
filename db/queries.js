@@ -1,9 +1,9 @@
 const pool = require('./pool');
 
 // Category Queries
-exports.getCategories = async () => {
+exports.getAllCategories = async () => {
    const res = await pool.query('SELECT * FROM categories');
-   return res;
+   return res.rows;
 };
 
 exports.createCategory = async (name, slug) => {
@@ -23,7 +23,7 @@ exports.deleteCategory = async (id) => {
 };
 
 // Manufacturer Queries
-exports.getManufacturers = async () => {
+exports.getAllManufacturers = async () => {
    const res = await pool.query('SELECT * FROM manufacturers');
    return res.rows;
 };
@@ -37,7 +37,7 @@ exports.createManufacturer = async (name) => {
 };
 
 // Item Queries
-exports.getItems = async () => {
+exports.getAllItems = async () => {
    const res = await pool.query(
       `SELECT items.*, categories.name AS category_name, manufacturers.name AS manufacturer_name 
      FROM items

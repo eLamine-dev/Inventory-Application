@@ -2,14 +2,16 @@
 <html lang="en">
    <head>
       <title>Dashboard</title>
-      <!-- <link rel="stylesheet" href="/styles.css" /> -->
-      <!-- <script src="/scripts.js"></script> -->
    </head>
    <body>
+      <h1>Categories</h1>
       <ul>
-         <% categories.forEach(category => { %>
+         <% if (categories && categories.length > 0) { %> <%
+         categories.forEach(category => { %>
          <li><%= category.name %></li>
-         <% }); %>
+         <% }); %> <% } else { %>
+         <li>No categories available</li>
+         <% } %>
       </ul>
    </body>
 </html>

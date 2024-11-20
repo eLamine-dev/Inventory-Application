@@ -5,12 +5,12 @@ const { getItems } = require('../controllers/itemController');
 
 const router = express.Router();
 
-router.get('/', getCategories, (req, res) => {
+router.get('/', getCategories, getManufacturers, getItems, (req, res) => {
    res.render('dashboard', {
       categories: req.categories,
-      //   manufacturers: req.manufacturers,
-      //   items: req.items,
-      //   selectedItem: null,
+      manufacturers: req.manufacturers,
+      items: req.items,
+      selectedItem: null,
    });
 });
 

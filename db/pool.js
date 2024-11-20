@@ -1,15 +1,13 @@
 const { Pool } = require('pg');
 
-// require('dotenv').config({
-//    path: '../.env',
-// });
+require('dotenv').config({});
 
 const pool = new Pool({
-   user: 'e-lamine',
-   host: 'localhost',
-   database: 'inventory_app',
-   password: '123',
-   port: 5432,
+   user: process.env.DB_USER,
+   host: process.env.DB_HOST,
+   database: process.env.DB_NAME,
+   password: process.env.DB_PASSWORD,
+   port: process.env.DB_PORT,
 });
 
 module.exports = pool;

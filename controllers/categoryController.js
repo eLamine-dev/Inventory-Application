@@ -1,14 +1,14 @@
 const {
-   getCategories,
+   getAllCategories,
    createCategory,
    deleteCategory,
 } = require('../db/queries');
 
-exports.getCategories = async (req, res) => {
+exports.getCategories = async (req, res, next) => {
    try {
-      const categories = await getCategories();
-      req.categories = categories.rows;
-      next();
+      const categories = await getAllCategories();
+      req.categories = categories; // Attach categories to the request object
+      next(); // Pass control to the next middleware
    } catch (err) {
       console.error('Error fetching categories:', err.message);
       res.status(500).send('Internal Server Error');
@@ -26,8 +26,6 @@ exports.deleteCategory = async (req, res) => {
    await deleteCategory(id);
    res.redirect('/');
 };
-
-exports.getCategories = async (req, res, next) => {};
 
 exports.editCategory = async (req, res) => {
    const { id } = req.params;

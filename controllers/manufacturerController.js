@@ -1,9 +1,9 @@
-const { getManufacturers, createManufacturer } = require('../db/queries');
+const { getAllManufacturers, createManufacturer } = require('../db/queries');
 
 exports.getManufacturers = async (req, res, next) => {
    try {
-      const manufacturers = await getManufacturers();
-      req.manufacturers = manufacturers.rows;
+      const manufacturers = await getAllManufacturers();
+      req.manufacturers = manufacturers;
       next();
    } catch (err) {
       console.error('Error fetching manufacturers:', err.message);
