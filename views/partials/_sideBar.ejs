@@ -12,6 +12,8 @@
 </div>
 <ul>
    <% categories.forEach(category => { %>
-   <li><%= category.name %></li>
+   <li class="<%= selectedCategory == category.id ? 'selected' : '' %>">
+      <a href="/?categoryId=<%= category.id %>"><%= category.name %></a>
+   </li>
    <% }); %>
 </ul>

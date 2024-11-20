@@ -184,6 +184,10 @@ h5 {
    background-color: #e6e6e6;
 }
 
+.left-sidebar li.selected {
+   background-color: #b52020;
+}
+
 button {
    padding: 8px 12px;
    border: 1px solid #ccc;

@@ -6,6 +6,7 @@ const manufacturerRoutes = require('./routes/manufacturerRoutes');
 const itemRoutes = require('./routes/itemRoutes');
 const dashboardRoute = require('./routes/dashboardRoute');
 var path = require('path');
+const session = require('express-session');
 
 const bodyParser = require('body-parser');
 require('dotenv').config();
@@ -19,6 +20,15 @@ app.set('view engine', 'ejs');
 // app.set('views', path.join(__dirname, 'views'));
 
 app.locals.pool = pool;
+
+app.use(
+   session({
+      secret: 'your-secret-key',
+      resave: false,
+      saveUninitialized: true,
+      cookie: { maxAge: 24 * 60 * 60 * 1000 }, // Session expires in 1 day
+   })
+);
 
 // Routes
 app.use('/', dashboardRoute);

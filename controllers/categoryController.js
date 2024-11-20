@@ -7,8 +7,8 @@ const {
 exports.getCategories = async (req, res, next) => {
    try {
       const categories = await getAllCategories();
-      req.categories = categories; // Attach categories to the request object
-      next(); // Pass control to the next middleware
+      req.categories = categories;
+      next();
    } catch (err) {
       console.error('Error fetching categories:', err.message);
       res.status(500).send('Internal Server Error');

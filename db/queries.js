@@ -47,6 +47,19 @@ exports.getAllItems = async () => {
    return res.rows;
 };
 
+//Items by category
+exports.getItemsByCategory = async (categoryId) => {
+   const res = await pool.query(
+      `SELECT items.*, categories.name AS category_name, manufacturers.name AS manufacturer_name
+     FROM items
+     LEFT JOIN categories ON items.category_id = categories.id
+     LEFT JOIN manufacturers ON items.manufacturer_id = manufacturers.id
+     WHERE items.category_id = $1`,
+      [categoryId]
+   );
+   return res.rows;
+};
+
 exports.createItem = async (
    name,
    price,

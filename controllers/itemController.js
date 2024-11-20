@@ -1,14 +1,31 @@
-const { getAllItems, createItem } = require('../db/queries');
+const {
+   getAllItems,
+   createItem,
+   getItemsByCategory,
+} = require('../db/queries');
 
 exports.getItems = async (req, res, next) => {
-   try {
-      const items = await getAllItems();
-      req.items = items;
-      next();
-   } catch (err) {
-      console.error('Error fetching items:', err.message);
-      res.status(500).send('Internal Server Error');
+   const { categoryId } = req.query;
+   if (categoryId) {
+      req.session.selectedCategory = categoryId;
+
+      try {
+         const items = await getItemsByCategory(categoryId);
+         req.items = items;
+      } catch (err) {
+         console.error('Error fetching items:', err.message);
+         res.status(500).send('Internal Server Error');
+      }
+   } else {
+      try {
+         const items = await getAllItems();
+         req.items = items;
+      } catch (err) {
+         console.error('Error fetching items:', err.message);
+         res.status(500).send('Internal Server Error');
+      }
    }
+   next();
 };
 
 exports.addItem = async (req, res) => {
