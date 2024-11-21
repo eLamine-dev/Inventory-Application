@@ -17,7 +17,6 @@ app.use(bodyParser.json());
 app.use(methodOverride('_method'));
 app.use(express.static('public'));
 app.set('view engine', 'ejs');
-// app.set('views', path.join(__dirname, 'views'));
 
 app.locals.pool = pool;
 
@@ -26,11 +25,10 @@ app.use(
       secret: 'your-secret-key',
       resave: false,
       saveUninitialized: true,
-      cookie: { maxAge: 24 * 60 * 60 * 1000 }, // Session expires in 1 day
+      cookie: { maxAge: 24 * 60 * 60 * 1000 },
    })
 );
 
-// Routes
 app.use('/', dashboardRoute);
 app.use('/categories', categoryRoutes);
 app.use('/manufacturers', manufacturerRoutes);

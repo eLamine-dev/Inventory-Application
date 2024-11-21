@@ -5,27 +5,38 @@ const {
 } = require('../db/queries');
 
 exports.getItems = async (req, res, next) => {
-   const { categoryId } = req.query;
+   const { categoryId, itemId } = req.query;
+   let items;
+
+   // Retain the selected category in the session
    if (categoryId) {
       req.session.selectedCategory = categoryId;
-
-      try {
-         const items = await getItemsByCategory(categoryId);
-         req.items = items;
-      } catch (err) {
-         console.error('Error fetching items:', err.message);
-         res.status(500).send('Internal Server Error');
-      }
-   } else {
-      try {
-         const items = await getAllItems();
-         req.items = items;
-      } catch (err) {
-         console.error('Error fetching items:', err.message);
-         res.status(500).send('Internal Server Error');
-      }
    }
-   next();
+
+   const selectedCategory = req.session.selectedCategory;
+
+   try {
+      // Fetch items by category if a category is selected
+      if (selectedCategory) {
+         items = await getItemsByCategory(selectedCategory);
+      } else {
+         items = await getAllItems();
+      }
+
+      req.items = items;
+
+      // If an item is selected, find it from the filtered items
+      if (itemId) {
+         req.session.selectedItem = items.find((item) => item.id == itemId);
+      } else {
+         req.session.selectedItem = null;
+      }
+
+      next();
+   } catch (err) {
+      console.error('Error fetching items:', err.message);
+      res.status(500).send('Internal Server Error');
+   }
 };
 
 exports.addItem = async (req, res) => {

@@ -10,8 +10,8 @@ router.get('/', getCategories, getManufacturers, getItems, (req, res) => {
       categories: req.categories,
       manufacturers: req.manufacturers,
       items: req.items,
-      selectedItem: null,
-      selectedCategory: req.session.selectedCategory || null,
+      selectedItem: req.session.selectedItem,
+      selectedCategory: req.session.selectedCategory,
    });
 });
 
