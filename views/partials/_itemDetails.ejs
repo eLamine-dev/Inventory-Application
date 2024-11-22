@@ -24,6 +24,25 @@
 <p><strong>Stock:</strong> <%= selectedItem.stock %></p>
 <p><strong>Price:</strong> $<%= selectedItem.price %></p>
 
+<!-- Specifications Table -->
+<h6>Specifications</h6>
+<table>
+   <thead>
+      <tr>
+         <th>Specification</th>
+         <th>Value</th>
+      </tr>
+   </thead>
+   <tbody>
+      <% Object.entries(selectedItem.specifications).forEach(([key, value]) => {
+      %>
+      <tr>
+         <td><%= key %></td>
+         <td><%= value %></td>
+      </tr>
+      <% }); %>
+   </tbody>
+</table>
 <% } else { %>
 <p>Select a part to view its details.</p>
 <% } %>

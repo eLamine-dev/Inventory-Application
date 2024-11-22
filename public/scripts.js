@@ -5,3 +5,10 @@ function selectItem(itemId) {
    const selectedRow = document.querySelector(`tr[data-id='${itemId}']`);
    selectedRow.classList.add('selected');
 }
+
+// document.addEventListener('DOMContentLoaded', () => {
+//    const selectedRow = document.querySelector(
+//       `tr[data-id="${selectedItemId}"]`
+//    );
+//    if (selectedRow) selectedRow.classList.add('selected');
+// });

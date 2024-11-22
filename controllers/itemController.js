@@ -6,35 +6,25 @@ const {
 
 exports.getItems = async (req, res, next) => {
    const { categoryId, itemId } = req.query;
-   let items;
-
-   // Retain the selected category in the session
-   if (categoryId) {
-      req.session.selectedCategory = categoryId;
-   }
-
-   const selectedCategory = req.session.selectedCategory;
+   console.log(categoryId, itemId);
 
    try {
-      // Fetch items by category if a category is selected
-      if (selectedCategory) {
-         items = await getItemsByCategory(selectedCategory);
-      } else {
-         items = await getAllItems();
-      }
+      if (categoryId) req.session.selectedCategory = categoryId;
+
+      const selectedCategory = req.session.selectedCategory;
+      const items = selectedCategory
+         ? await getItemsByCategory(selectedCategory)
+         : await getAllItems();
 
       req.items = items;
-
-      // If an item is selected, find it from the filtered items
-      if (itemId) {
-         req.session.selectedItem = items.find((item) => item.id == itemId);
-      } else {
-         req.session.selectedItem = null;
-      }
+      req.session.selectedItem = itemId
+         ? items.find((item) => item.id === itemId)
+         : null;
+      console.log(req.session.selectedItem);
 
       next();
    } catch (err) {
-      console.error('Error fetching items:', err.message);
+      console.error('Error fetching items:', err);
       res.status(500).send('Internal Server Error');
    }
 };
