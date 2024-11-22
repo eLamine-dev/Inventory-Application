@@ -272,3 +272,23 @@ tr.selected {
    margin-top: 10px;
    text-align: right;
 }
+
+.inline-form {
+   display: inline;
+   margin: 0;
+   padding: 0;
+}
+
+.link-button {
+   background: none;
+   border: none;
+   color: inherit;
+   font: inherit;
+   text-align: left;
+   cursor: pointer;
+   padding: 0;
+}
+
+.link-button:hover {
+   text-decoration: underline;
+}

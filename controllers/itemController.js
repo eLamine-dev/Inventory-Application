@@ -5,26 +5,38 @@ const {
 } = require('../db/queries');
 
 exports.getItems = async (req, res, next) => {
-   const { categoryId, itemId } = req.query;
-   console.log(categoryId, itemId);
+   const { selectedCategoryId, selectedItemId } = req.session;
 
    try {
-      if (categoryId) req.session.selectedCategory = categoryId;
-
-      const selectedCategory = req.session.selectedCategory;
-      const items = selectedCategory
-         ? await getItemsByCategory(selectedCategory)
+      const items = selectedCategoryId
+         ? await getItemsByCategory(selectedCategoryId)
          : await getAllItems();
 
       req.items = items;
-      req.session.selectedItem = itemId
-         ? items.find((item) => item.id === itemId)
-         : null;
-      console.log(req.session.selectedItem);
+
+      if (selectedItemId) {
+         const selectedItem = items.find((item) => item.id == selectedItemId);
+         req.session.selectedItem = selectedItem;
+      } else {
+         req.session.selectedItem = null;
+      }
+
+      req.session.items = items;
 
       next();
    } catch (err) {
-      console.error('Error fetching items:', err);
+      console.error('Error fetching items:', err.message);
+      res.status(500).send('Internal Server Error');
+   }
+};
+
+exports.selectItem = async (req, res) => {
+   const { itemId } = req.params;
+   try {
+      req.session.selectedItemId = itemId || null;
+      res.redirect('/'); // Redirect back to dashboard
+   } catch (err) {
+      console.error('Error selecting item:', err.message);
       res.status(500).send('Internal Server Error');
    }
 };

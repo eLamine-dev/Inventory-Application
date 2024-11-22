@@ -23,14 +23,20 @@
       <% items.forEach(item => { %>
       <tr
          data-id="<%= item.id %>"
-         onclick="window.location='/?itemId=<%= item.id %>&categoryId=<%= selectedCategory %>'"
          class="<%= selectedItem && selectedItem.id == item.id ? 'selected' : '' %>"
+         onclick="document.getElementById('selectItemForm-<%= item.id %>').submit();"
       >
          <td><%= item.name %></td>
          <td><%= item.category_name %></td>
          <td><%= item.manufacturer_name %></td>
          <td><%= item.stock %></td>
          <td>$<%= item.price %></td>
+         <form
+            id="selectItemForm-<%= item.id %>"
+            action="/items/select-item/<%= item.id %>"
+            method="POST"
+            style="display: none"
+         ></form>
       </tr>
       <% }); %>
    </tbody>

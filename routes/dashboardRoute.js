@@ -11,7 +11,7 @@ router.get('/', getCategories, getManufacturers, getItems, (req, res) => {
       manufacturers: req.manufacturers,
       items: req.items,
       selectedItem: req.session.selectedItem,
-      selectedCategory: req.session.selectedCategory,
+      selectedCategoryId: req.session.selectedCategoryId,
    });
 });
 

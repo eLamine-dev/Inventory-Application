@@ -15,6 +15,18 @@ exports.getCategories = async (req, res, next) => {
    }
 };
 
+exports.selectCategory = async (req, res) => {
+   const { categoryId } = req.params;
+   try {
+      req.session.selectedCategoryId = categoryId;
+      req.session.selectedItemId = null;
+      res.redirect('/');
+   } catch (err) {
+      console.error('Error selecting category:', err.message);
+      res.status(500).send('Internal Server Error');
+   }
+};
+
 exports.addCategory = async (req, res) => {
    const { name, slug } = req.body;
    await createCategory(name, slug);

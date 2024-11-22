@@ -6,6 +6,7 @@ const {
    deleteCategory,
    confirmCategoryDeletion,
    handleCategoryDeletion,
+   selectCategory,
 } = require('../controllers/categoryController');
 
 const router = express.Router();
@@ -17,5 +18,7 @@ router.get('/confirm-deletion/:id', confirmCategoryDeletion);
 router.post('/handle-deletion', handleCategoryDeletion);
 router.put('/:id', editCategory);
 router.delete('/:id', deleteCategory);
+
+router.post('/select-category/:categoryId', selectCategory);
 
 module.exports = router;

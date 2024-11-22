@@ -10,10 +10,20 @@
       Delete Category
    </button>
 </div>
+
 <ul>
    <% categories.forEach(category => { %>
-   <li class="<%= selectedCategory == category.id ? 'selected' : '' %>">
-      <a href="/?categoryId=<%= category.id %>"><%= category.name %></a>
+   <li
+      onclick="document.getElementById('selectCategoryForm-<%= category.id %>').submit();"
+      class="<%= selectedCategoryId == category.id ? 'selected' : '' %>"
+   >
+      <%= category.name %>
+      <form
+         id="selectCategoryForm-<%= category.id %>"
+         action="/categories/select-category/<%= category.id %>"
+         method="POST"
+         style="display: none"
+      ></form>
    </li>
    <% }); %>
 </ul>
