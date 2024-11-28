@@ -1,0 +1,16 @@
+<div id="categoryModal" class="modal">
+    <div class="modal-dialog">
+       <form id="categoryForm" method="POST">
+          <h5 id="categoryModalTitle">Manage Category</h5>
+          <label for="categoryName">Name:</label>
+          <input type="text" name="name" id="categoryName" required />
+ 
+          <label for="categorySlug">Slug:</label>
+          <input type="text" name="slug" id="categorySlug" required />
+ 
+          <button type="submit" class="primary">Save</button>
+          <button type="button" class="secondary" onclick="closeModal('categoryModal')">Cancel</button>
+       </form>
+    </div>
+ </div>
+ 

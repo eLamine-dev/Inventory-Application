@@ -1,9 +1,9 @@
 <h3>Parts List</h3>
 <div>
-   <button class="success" onclick="openModal('addPartModal')">Add Part</button>
+   <button class="success" onclick="openItemModal('add')">Add Part</button>
    <button
       class="danger"
-      onclick="openModal('deletePartModal', '<%= selectedItem %>')"
+      onclick="openDeleteItemModal('<%= selectedItem.id %>', '<%= selectedItem.name %>')"
    >
       Delete
    </button>

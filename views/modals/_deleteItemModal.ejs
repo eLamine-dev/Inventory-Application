@@ -1,0 +1,17 @@
+<div id="deleteItemModal" class="modal">
+   <div class="modal-dialog">
+      <h5 id="deleteItemModalTitle">Delete Item</h5>
+      <p>Are you sure you want to delete this item?</p>
+      <form id="deleteItemForm" method="POST">
+         <input type="hidden" name="_method" value="DELETE" />
+         <button type="submit" class="danger">Yes, Delete</button>
+         <button
+            type="button"
+            class="secondary"
+            onclick="closeModal('deleteItemModal')"
+         >
+            Cancel
+         </button>
+      </form>
+   </div>
+</div>
