@@ -34,6 +34,10 @@ exports.selectItem = async (req, res) => {
    const { itemId } = req.params;
    try {
       req.session.selectedItemId = itemId || null;
+      const selectedItem = req.session.items.find(
+         (item) => item.id == req.session.selectedItemId
+      );
+      req.session.selectedItem = selectedItem || { name: '' };
       res.redirect('/'); // Redirect back to dashboard
    } catch (err) {
       console.error('Error selecting item:', err.message);

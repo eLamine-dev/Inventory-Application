@@ -1,12 +1,14 @@
 <h3>Parts List</h3>
 <div>
    <button class="success" onclick="openItemModal('add')">Add Part</button>
+   <% if (selectedItem) { %>
    <button
       class="danger"
-      onclick="openDeleteItemModal('<%= selectedItem.id %>', '<%= selectedItem.name %>')"
+      onclick="openDeleteItemModal('<%= selectedItemId %>', '<%= selectedItem.name %>')"
    >
       Delete
    </button>
+   <% } %>
 </div>
 <table>
    <thead>
