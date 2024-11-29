@@ -1,9 +1,12 @@
 <h5>Categories</h5>
 <div>
-   <button class="primary" onclick="openModal('addCategoryModal')">
+   <button class="primary" onclick="openCategoryModal('add')">
       Add Category
    </button>
-   <button class="primary" onclick="openModal('editCategoryModal')">
+   <button
+      class="primary"
+      onclick="openCategoryModal('edit', '<%= selectedCategoryId %>')"
+   >
       Edit Category
    </button>
    <button class="danger" onclick="openModal('deleteCategoryModal')">

@@ -1,31 +1,35 @@
-<div id="deleteCategoryModal" class="modal">
-    <div class="modal-dialog">
-       <h5>Delete Category</h5>
-       <p>Manage items in this category:</p>
-       <form id="deleteCategoryForm" method="POST">
-          <label>
-             <input type="radio" name="action" value="delete" required />
-             Delete associated items.
-          </label>
-          <label>
-             <input type="radio" name="action" value="reassign" required />
-             Reassign items to:
-             <select name="newCategoryId">
-                <% categories.forEach(category => { %>
-                <% if (category.id !== selectedCategoryId) { %>
-                <option value="<%= category.id %>"><%= category.name %></option>
-                <% } %>
-                <% }); %>
-             </select>
-          </label>
-          <label>
-             <input type="radio" name="action" value="nullify" required />
-             Remove category association from items.
-          </label>
- 
-          <button type="submit" class="danger">Confirm</button>
-          <button type="button" class="secondary" onclick="closeModal('deleteCategoryModal')">Cancel</button>
-       </form>
-    </div>
- </div>
- 
+<dialog id="deleteCategoryModal">
+   <div class="modal-dialog">
+      <h5>Delete Category</h5>
+      <p>Manage items in this category:</p>
+      <form id="deleteCategoryForm" method="POST">
+         <label>
+            <input type="radio" name="action" value="delete" required />
+            Delete associated items.
+         </label>
+         <label>
+            <input type="radio" name="action" value="reassign" required />
+            Reassign items to:
+            <select name="newCategoryId">
+               <% categories.forEach(category => { %> <% if (category.id !==
+               selectedCategoryId) { %>
+               <option value="<%= category.id %>"><%= category.name %></option>
+               <% } %> <% }); %>
+            </select>
+         </label>
+         <label>
+            <input type="radio" name="action" value="nullify" required />
+            Remove category association from items.
+         </label>
+
+         <button type="submit" class="danger">Confirm</button>
+         <button
+            type="button"
+            class="secondary"
+            onclick='closest("dialog").close()'
+         >
+            Cancel
+         </button>
+      </form>
+   </div>
+</dialog>
