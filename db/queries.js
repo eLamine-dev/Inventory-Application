@@ -42,6 +42,7 @@ exports.getItemById = (id) =>
        WHERE items.id = $1`,
       [id]
    );
+
 exports.createItem = (
    name,
    price,

@@ -31,6 +31,17 @@ function openCategoryModal(mode, category = {}) {
    modal.showModal();
 }
 
+function openDeleteCategoryModal(categoryId, categoryName) {
+   const modal = document.getElementById('deleteCategoryModal');
+   // const form = document.getElementById('deleteCategoryForm');
+   // const modalTitle = document.getElementById('deleteCategoryModalTitle');
+
+   // modalTitle.textContent = `Delete Category: ${categoryName}`;
+   // form.action = `/categories/${categoryId}`;
+   // modal.style.display = 'block';
+   modal.showModal();
+}
+
 function openItemModal(mode, item = {}) {
    const modal = document.getElementById('itemModal');
    // const form = document.getElementById('itemForm');
