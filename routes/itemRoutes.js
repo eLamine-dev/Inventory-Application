@@ -4,8 +4,7 @@ const {
    addItem,
    editItem,
    deleteItem,
-   addStock,
-   removeStock,
+   updateStock,
    selectItem,
 } = require('../controllers/itemController');
 
@@ -15,8 +14,7 @@ router.get('/', getItems);
 router.post('/', addItem);
 router.put('/:id', editItem);
 router.delete('/:id', deleteItem);
-router.post('/:id/add-stock', addStock);
-router.post('/:id/remove-stock', removeStock);
+router.post('/update-stock', updateStock);
 
 router.post('/select-item/:itemId', selectItem);
 

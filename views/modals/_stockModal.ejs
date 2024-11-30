@@ -1,0 +1,24 @@
+<dialog id="stockModal">
+   <form id="stockForm" action="/items/update-stock" method="POST">
+      <h5 id="stockModalTitle">Adjust Stock</h5>
+
+      <p><strong>Current Stock:</strong> <span id="currentStock">0</span></p>
+
+      <label for="stockChange">Quantity:</label>
+      <input type="number" id="stockChange" name="quantity" min="1" required />
+
+      <input type="hidden" id="stockAction" name="action" value="" />
+      <input type="hidden" id="stockItemId" name="itemId" value="" />
+
+      <menu>
+         <button
+            value="cancel"
+            class="secondary"
+            onclick='closest("dialog").close()'
+         >
+            Cancel
+         </button>
+         <button type="submit" class="primary">Confirm</button>
+      </menu>
+   </form>
+</dialog>

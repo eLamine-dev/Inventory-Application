@@ -86,22 +86,50 @@ exports.deleteItem = async (req, res) => {
    res.redirect('/');
 };
 
-exports.addStock = async (req, res) => {
-   const { id } = req.params;
-   const { quantity } = req.body;
-   await pool.query('UPDATE items SET stock = stock + $1 WHERE id = $2', [
-      quantity,
-      id,
-   ]);
-   res.redirect('/');
-};
+// exports.addStock = async (req, res) => {
+//    const { id } = req.params;
+//    const { quantity } = req.body;
+//    await pool.query('UPDATE items SET stock = stock + $1 WHERE id = $2', [
+//       quantity,
+//       id,
+//    ]);
+//    res.redirect('/');
+// };
 
-exports.removeStock = async (req, res) => {
-   const { id } = req.params;
-   const { quantity } = req.body;
-   await pool.query('UPDATE items SET stock = stock - $1 WHERE id = $2', [
-      quantity,
-      id,
-   ]);
-   res.redirect('/');
+// exports.removeStock = async (req, res) => {
+//    const { id } = req.params;
+//    const { quantity } = req.body;
+//    await pool.query('UPDATE items SET stock = stock - $1 WHERE id = $2', [
+//       quantity,
+//       id,
+//    ]);
+//    res.redirect('/');
+// };
+
+exports.updateStock = async (req, res) => {
+   const { itemId, action, quantity } = req.body;
+
+   try {
+      const currentStockQuery = 'SELECT stock FROM items WHERE id = $1';
+      const { rows } = await pool.query(currentStockQuery, [itemId]);
+      const currentStock = rows[0].stock;
+
+      let newStock;
+      if (action === 'add') {
+         newStock = currentStock + parseInt(quantity, 10);
+      } else if (action === 'remove') {
+         newStock = currentStock - parseInt(quantity, 10);
+         if (newStock < 0) newStock = 0; // Prevent negative stock
+      } else {
+         return res.status(400).send('Invalid action');
+      }
+
+      const updateStockQuery = 'UPDATE items SET stock = $1 WHERE id = $2';
+      await pool.query(updateStockQuery, [newStock, itemId]);
+
+      res.redirect('/');
+   } catch (err) {
+      console.error('Error updating stock:', err.message);
+      res.status(500).send('Internal Server Error');
+   }
 };

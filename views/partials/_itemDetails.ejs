@@ -3,19 +3,19 @@
 <div>
    <button
       class="primary"
-      onclick="openModal('editPartDetailsModal', '<%= selectedItem.id %>')"
+      onclick="openItemModal('edit','<%= selectedItem.id %>' )"
    >
       Edit Details
    </button>
    <button
       class="success"
-      onclick="openModal('addStockModal', '<%= selectedItem.id %>')"
+      onclick="openStockModal('add', '<%= selectedItem.id %>')"
    >
       Add Stock
    </button>
    <button
       class="danger"
-      onclick="openModal('removeStockModal', '<%= selectedItem.id %>')"
+      onclick="openStockModal('remove', '<%= selectedItem.id %>')"
    >
       Remove Stock
    </button>

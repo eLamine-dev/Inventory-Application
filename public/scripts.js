@@ -66,6 +66,33 @@ function openDeleteItemModal(itemId, itemName) {
    modal.showModal();
 }
 
+function openStockModal(action, itemId) {
+   const modal = document.getElementById('stockModal');
+   // const form = document.getElementById('stockForm');
+   // const title = document.getElementById('stockModalTitle');
+   // const actionField = document.getElementById('stockAction');
+   // const itemIdField = document.getElementById('stockItemId');
+   // const currentStock = document.getElementById('currentStock');
+
+   // // Set the modal title and action
+   // title.textContent = action === 'add' ? 'Add Stock' : 'Remove Stock';
+   // actionField.value = action;
+   // itemIdField.value = itemId;
+
+   // // Get the current stock dynamically
+   // const selectedItem = document.querySelector(`[data-id="${itemId}"]`);
+   // if (selectedItem) {
+   //    currentStock.textContent = selectedItem
+   //       .querySelector('td:nth-child(4)')
+   //       .textContent.trim();
+   // }
+
+   // // Open the modal
+   modal.showModal();
+}
+
+// Close the stock modal
 function closeModal(modalId) {
-   document.getElementById(modalId).style.display = 'none';
+   const modal = document.getElementById(modalId);
+   modal.close();
 }
