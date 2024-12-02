@@ -116,7 +116,7 @@ body {
    padding-bottom: 5px;
 }
 
-/* Tables */
+
 table {
    width: 100%;
    border-collapse: collapse;
@@ -129,12 +129,20 @@ table td {
    border: 1px solid #a9a9a9;
    padding: 8px 10px;
    text-align: left;
+   
+}
+
+
+table td {
+   cursor: pointer;
 }
 
 table th {
    background-color: #d0d5db;
    font-weight: bold;
+   
 }
+
 
 table tbody tr:hover {
    background-color: #e6ebf1;
@@ -222,7 +230,7 @@ dialog button {
    margin-right: 5px;
 }
 
-/* Footer */
+
 .footer {
    background-color: #d0d5db;
    border-top: 1px solid #a9a9a9;

@@ -6,29 +6,78 @@ function selectItem(itemId) {
    selectedRow.classList.add('selected');
 }
 
-// document.addEventListener('DOMContentLoaded', () => {
-//    const selectedRow = document.querySelector(
-//       `tr[data-id="${selectedItemId}"]`
-//    );
-//    if (selectedRow) selectedRow.classList.add('selected');
-// });
-
-function openCategoryModal(mode, category = {}) {
-   const modal = document.getElementById('categoryModal');
-   // const form = modal.getElementById('categoryForm');
-   // const title = document.getElementById('categoryModalTitle');
-
-   // form.reset();
-   // if (mode === 'edit') {
-   //    title.textContent = 'Edit Category';
-   //    form.action = `/categories/${category.id}?_method=PUT`;
-   //    document.getElementById('categoryName').value = category.name;
-   //    document.getElementById('categorySlug').value = category.slug;
-   // } else {
-   //    title.textContent = 'Add Category';
-   //    form.action = '/categories';
-   // }
+// Utility to open modals
+function openModal(modalId) {
+   const modal = document.getElementById(modalId);
    modal.showModal();
+}
+
+// Utility to close modals
+function closeModal(modalId) {
+   const modal = document.getElementById(modalId);
+   modal.close();
+}
+
+function openCategoryModal(action, category = {}) {
+   const modal = document.getElementById('categoryModal');
+   const title = modal.querySelector('#categoryModalTitle');
+   const nameInput = modal.querySelector('#categoryName');
+   const slugInput = modal.querySelector('#categorySlug');
+   const form = modal.querySelector('form');
+
+   if (action === 'add') {
+      title.textContent = 'Add Category';
+      nameInput.value = '';
+      slugInput.value = '';
+      form.action = '/categories/create';
+   } else if (action === 'edit') {
+      title.textContent = 'Edit Category';
+      nameInput.value = category.name || '';
+      slugInput.value = category.slug || '';
+      form.action = `/categories/update/${category.id}`;
+   }
+
+   openModal('categoryModal');
+}
+
+// Open Item Modal (Add or Edit)
+function openItemModal(action, item = {}) {
+   const modal = document.getElementById('itemModal');
+   const title = modal.querySelector('#itemModalTitle');
+   const nameInput = modal.querySelector('#itemName');
+   const categorySelect = modal.querySelector('#itemCategory');
+   const manufacturerSelect = modal.querySelector('#itemManufacturer');
+   const priceInput = modal.querySelector('#itemPrice');
+   const stockInput = modal.querySelector('#itemStock');
+   const specificationsInput = modal.querySelector('#itemSpecifications');
+   const form = modal.querySelector('form');
+
+   // Configure modal for Add or Edit
+   if (action === 'add') {
+      title.textContent = 'Add Item';
+      nameInput.value = '';
+      categorySelect.value = '';
+      manufacturerSelect.value = '';
+      priceInput.value = '';
+      stockInput.value = '';
+      specificationsInput.value = '';
+      form.action = '/items/create'; // Update form action for creation
+   } else if (action === 'edit') {
+      title.textContent = 'Edit Item';
+      nameInput.value = item.name || '';
+      categorySelect.value = item.category_id || '';
+      manufacturerSelect.value = item.manufacturer_id || '';
+      priceInput.value = item.price || '';
+      stockInput.value = item.stock || '';
+      specificationsInput.value = JSON.stringify(
+         item.specifications || {},
+         null,
+         2
+      );
+      form.action = `/items/${item.id}/update`; // Update form action for editing
+   }
+
+   openModal('itemModal');
 }
 
 function openDeleteCategoryModal(categoryId, categoryName) {
@@ -39,30 +88,6 @@ function openDeleteCategoryModal(categoryId, categoryName) {
    // modalTitle.textContent = `Delete Category: ${categoryName}`;
    // form.action = `/categories/${categoryId}`;
    // modal.style.display = 'block';
-   modal.showModal();
-}
-
-function openItemModal(mode, item = {}) {
-   const modal = document.getElementById('itemModal');
-   // const form = document.getElementById('itemForm');
-   // const title = document.getElementById('itemModalTitle');
-
-   // form.reset();
-   // if (mode === 'edit') {
-   //    title.textContent = 'Edit Item';
-   //    form.action = `/items/${item.id}?_method=PUT`;
-   //    document.getElementById('itemName').value = item.name;
-   //    document.getElementById('itemPrice').value = item.price;
-   //    document.getElementById('itemStock').value = item.stock;
-   //    document.getElementById('itemCategory').value = item.category_id;
-   //    document.getElementById('itemManufacturer').value = item.manufacturer_id;
-   //    document.getElementById('itemSpecifications').value = JSON.stringify(
-   //       item.specifications
-   //    );
-   // } else {
-   //    title.textContent = 'Add Item';
-   //    form.action = '/items';
-   // }
    modal.showModal();
 }
 
