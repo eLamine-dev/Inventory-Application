@@ -5,7 +5,7 @@
    </button>
    <button
       class="primary"
-      onclick="openCategoryModal('edit', '<%= selectedCategoryId %>')"
+      onclick="openCategoryModal('edit', '<%= JSON.stringify(selectedCategory) %>')"
    >
       Edit Category
    </button>

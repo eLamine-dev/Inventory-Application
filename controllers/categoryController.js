@@ -6,6 +6,7 @@ const {
    confirmCategoryDeletionQueries,
    handleCategoryDeletionQueries,
 } = require('../db/queries');
+const { query } = require('../db/pool');
 
 exports.getCategories = async (req, res, next) => {
    try {
@@ -22,11 +23,16 @@ exports.selectCategory = async (req, res) => {
    const { categoryId } = req.params;
    try {
       req.session.selectedCategoryId = categoryId;
+      const categories = await getAllCategories();
+      req.session.selectedCategory = categories.find((category) => {
+         return category.id == categoryId;
+      });
+
       req.session.selectedItemId = null;
       res.redirect('/');
    } catch (err) {
       console.error('Error selecting category:', err.message);
-      res.status(500).send('Internal Server Error');
+      res.status(500).send('Internal Server Error vvv');
    }
 };
 

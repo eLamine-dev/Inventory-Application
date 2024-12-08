@@ -16,8 +16,6 @@ exports.getManufacturers = async (req, res, next) => {
    }
 };
 
-const pool = require('../db/pool');
-
 exports.addManufacturer = async (req, res) => {
    try {
       const { name } = req.body;

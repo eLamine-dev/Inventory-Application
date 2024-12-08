@@ -18,22 +18,25 @@ function closeModal(modalId) {
    modal.close();
 }
 
-function openCategoryModal(action, category = {}) {
+function openCategoryModal(action, selectedCategory) {
    const modal = document.getElementById('categoryModal');
    const title = modal.querySelector('#categoryModalTitle');
    const nameInput = modal.querySelector('#categoryName');
-   const slugInput = modal.querySelector('#categorySlug');
+   const category = JSON.parse(selectedCategory);
+
    const form = modal.querySelector('form');
 
    if (action === 'add') {
       title.textContent = 'Add Category';
       nameInput.value = '';
-      slugInput.value = '';
+
       form.action = '/categories/create';
    } else if (action === 'edit') {
       title.textContent = 'Edit Category';
-      nameInput.value = category.name || '';
-      slugInput.value = category.slug || '';
+      console.log(category);
+
+      nameInput.value = category.name || 'hello';
+
       form.action = `/categories/update/${category.id}`;
    }
 
