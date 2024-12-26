@@ -18,7 +18,6 @@ router.get('/confirm-deletion/:id', confirmCategoryDeletion);
 router.post('/handle-deletion', handleCategoryDeletion);
 router.put('/:id', editCategory);
 router.delete('/:id', deleteCategory);
-
 router.post('/select-category/:categoryId', selectCategory);
 
 module.exports = router;
