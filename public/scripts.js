@@ -135,3 +135,38 @@ function closeModal(modalId) {
    const modal = document.getElementById(modalId);
    modal.close();
 }
+
+function validateForm(formId) {
+   const form = document.getElementById(formId);
+   const inputs = form.querySelectorAll('[required]');
+   let valid = true;
+
+   inputs.forEach((input) => {
+      if (!input.value.trim()) {
+         valid = false;
+         input.classList.add('error'); // Add a CSS class to highlight the error
+      } else {
+         input.classList.remove('error');
+      }
+   });
+
+   if (!valid) {
+      const errorElement = document.getElementById('formError');
+      if (errorElement) {
+         errorElement.textContent = 'Please fill in all required fields.';
+         errorElement.style.display = 'block';
+      }
+   }
+
+   return valid;
+}
+
+document.querySelectorAll('form').forEach((form) => {
+   form.addEventListener('submit', (e) => {
+      const errorElement = document.getElementById('formError');
+      if (errorElement) errorElement.style.display = 'none';
+      if (!validateForm(form.id)) {
+         e.preventDefault();
+      }
+   });
+});

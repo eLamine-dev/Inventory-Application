@@ -2,7 +2,11 @@
    <div class="modal-dialog">
       <h5>Delete Category</h5>
       <p>Manage items in this category:</p>
-      <form id="deleteCategoryForm" method="POST">
+      <form
+         id="deleteCategoryForm"
+         method="POST"
+         action="/categories/handle-deletion"
+      >
          <label>
             <input type="radio" name="action" value="delete" required />
             Delete associated items.
@@ -26,7 +30,7 @@
          <button
             type="button"
             class="secondary"
-            onclick='closest("dialog").close()'
+            onclick='closeModal("deleteCategoryModal")'
          >
             Cancel
          </button>

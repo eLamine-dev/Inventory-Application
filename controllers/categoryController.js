@@ -70,16 +70,25 @@ exports.confirmCategoryDeletion = async (req, res) => {
 
 exports.handleCategoryDeletion = async (req, res) => {
    const { action, categoryId, newCategoryId } = req.body;
-   if (action === 'delete') {
-      await handleCategoryDeletionQueries.deleteItemsByCategory(categoryId);
-   } else if (action === 'reassign' && newCategoryId) {
-      await handleCategoryDeletionQueries.reassignItemsCategory(
-         newCategoryId,
-         categoryId
-      );
-   } else if (action === 'nullify') {
-      await handleCategoryDeletionQueries.nullifyItemsCategory(categoryId);
+
+   try {
+      if (action === 'delete') {
+         await handleCategoryDeletionQueries.deleteItemsByCategory(categoryId);
+      } else if (action === 'reassign' && newCategoryId) {
+         await handleCategoryDeletionQueries.reassignItemsCategory(
+            newCategoryId,
+            categoryId
+         );
+      } else if (action === 'nullify') {
+         await handleCategoryDeletionQueries.nullifyItemsCategory(categoryId);
+      } else {
+         return res.status(400).json({ message: 'Invalid action.' });
+      }
+
+      await handleCategoryDeletionQueries.deleteCategory(categoryId);
+      res.redirect('/');
+   } catch (err) {
+      console.error('Error handling category deletion:', err.message);
+      res.status(500).json({ message: 'Internal Server Error' });
    }
-   await handleCategoryDeletionQueries.deleteCategory(categoryId);
-   res.redirect('/');
 };
