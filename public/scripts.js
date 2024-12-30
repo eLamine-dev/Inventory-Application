@@ -6,167 +6,218 @@ function selectItem(itemId) {
    selectedRow.classList.add('selected');
 }
 
-// Utility to open modals
 function openModal(modalId) {
    const modal = document.getElementById(modalId);
    modal.showModal();
 }
 
-// Utility to close modals
 function closeModal(modalId) {
    const modal = document.getElementById(modalId);
    modal.close();
 }
 
-function openCategoryModal(action, selectedCategory) {
+function openCategoryModal(action, categoryData = null) {
    const modal = document.getElementById('categoryModal');
+   const form = modal.querySelector('form');
    const title = modal.querySelector('#categoryModalTitle');
    const nameInput = modal.querySelector('#categoryName');
-   const category = JSON.parse(selectedCategory);
 
-   const form = modal.querySelector('form');
+   form.reset();
 
    if (action === 'add') {
       title.textContent = 'Add Category';
-      nameInput.value = '';
-
-      form.action = '/categories/create';
+      form.setAttribute('method', 'POST');
+      form.setAttribute('action', '/categories');
    } else if (action === 'edit') {
+      const category = categoryData ? JSON.parse(categoryData) : {};
       title.textContent = 'Edit Category';
-      console.log(category);
+      nameInput.value = category.name || '';
 
-      nameInput.value = category.name || 'hello';
+      form.setAttribute('method', 'POST');
+      form.setAttribute('action', `/categories/${category.id}`);
 
-      form.action = `/categories/update/${category.id}`;
+      const methodInput = document.createElement('input');
+      methodInput.type = 'hidden';
+      methodInput.name = '_method';
+      methodInput.value = 'PUT';
+      form.appendChild(methodInput);
    }
 
-   openModal('categoryModal');
+   modal.showModal();
 }
 
-// Open Item Modal (Add or Edit)
-function openItemModal(action, item = {}) {
+function openItemModal(action, itemId = null) {
    const modal = document.getElementById('itemModal');
-   const title = modal.querySelector('#itemModalTitle');
-   const nameInput = modal.querySelector('#itemName');
-   const categorySelect = modal.querySelector('#itemCategory');
-   const manufacturerSelect = modal.querySelector('#itemManufacturer');
-   const priceInput = modal.querySelector('#itemPrice');
-   const stockInput = modal.querySelector('#itemStock');
-   const specificationsInput = modal.querySelector('#itemSpecifications');
    const form = modal.querySelector('form');
+   const title = modal.querySelector('#itemModalTitle');
 
-   // Configure modal for Add or Edit
+   form.reset();
+
    if (action === 'add') {
       title.textContent = 'Add Item';
-      nameInput.value = '';
-      categorySelect.value = '';
-      manufacturerSelect.value = '';
-      priceInput.value = '';
-      stockInput.value = '';
-      specificationsInput.value = '';
-      form.action = '/items/create'; // Update form action for creation
+      form.setAttribute('method', 'POST');
+      form.setAttribute('action', '/items');
    } else if (action === 'edit') {
       title.textContent = 'Edit Item';
-      nameInput.value = item.name || '';
-      categorySelect.value = item.category_id || '';
-      manufacturerSelect.value = item.manufacturer_id || '';
-      priceInput.value = item.price || '';
-      stockInput.value = item.stock || '';
-      specificationsInput.value = JSON.stringify(
-         item.specifications || {},
-         null,
-         2
-      );
-      form.action = `/items/${item.id}/update`; // Update form action for editing
+
+      const selectedItem = document.querySelector(`tr[data-id="${itemId}"]`);
+      if (selectedItem) {
+         const itemData = {
+            name: selectedItem.cells[0].textContent,
+            category_name: selectedItem.cells[1].textContent,
+            manufacturer_name: selectedItem.cells[2].textContent,
+            stock: selectedItem.cells[3].textContent,
+            price: selectedItem.cells[4].textContent.replace('$', ''),
+         };
+
+         document.querySelector('#itemName').value = itemData.name;
+         document.querySelector('#itemStock').value = itemData.stock;
+         document.querySelector('#itemPrice').value = itemData.price;
+
+         const categorySelect = document.querySelector('#itemCategory');
+         const manufacturerSelect = document.querySelector('#itemManufacturer');
+
+         Array.from(categorySelect.options).forEach((option) => {
+            if (option.textContent === itemData.category_name) {
+               option.selected = true;
+            }
+         });
+
+         Array.from(manufacturerSelect.options).forEach((option) => {
+            if (option.textContent === itemData.manufacturer_name) {
+               option.selected = true;
+            }
+         });
+      }
+
+      form.setAttribute('method', 'POST');
+      form.setAttribute('action', `/items/${itemId}`);
+
+      const methodInput = document.createElement('input');
+      methodInput.type = 'hidden';
+      methodInput.name = '_method';
+      methodInput.value = 'PUT';
+      form.appendChild(methodInput);
    }
 
-   openModal('itemModal');
-}
-
-function openDeleteCategoryModal(categoryId, categoryName) {
-   const modal = document.getElementById('deleteCategoryModal');
-   // const form = document.getElementById('deleteCategoryForm');
-   // const modalTitle = document.getElementById('deleteCategoryModalTitle');
-
-   // modalTitle.textContent = `Delete Category: ${categoryName}`;
-   // form.action = `/categories/${categoryId}`;
-   // modal.style.display = 'block';
    modal.showModal();
 }
 
 function openDeleteItemModal(itemId, itemName) {
    const modal = document.getElementById('deleteItemModal');
-   // const form = document.getElementById('deleteItemForm');
-   // const modalTitle = document.getElementById('deleteItemModalTitle');
+   const form = modal.querySelector('form');
+   const title = modal.querySelector('#deleteItemModalTitle');
 
-   // modalTitle.textContent = `Delete Item: ${itemName}`;
-   // form.action = `/items/${itemId}`;
-   // modal.style.display = 'block';
+   title.textContent = `Delete Item: ${itemName}`;
+   form.setAttribute('method', 'POST');
+   form.setAttribute('action', `/items/${itemId}`);
+
+   const methodInput = document.createElement('input');
+   methodInput.type = 'hidden';
+   methodInput.name = '_method';
+   methodInput.value = 'DELETE';
+   form.appendChild(methodInput);
+
    modal.showModal();
 }
 
 function openStockModal(action, itemId) {
    const modal = document.getElementById('stockModal');
-   // const form = document.getElementById('stockForm');
-   // const title = document.getElementById('stockModalTitle');
-   // const actionField = document.getElementById('stockAction');
-   // const itemIdField = document.getElementById('stockItemId');
-   // const currentStock = document.getElementById('currentStock');
+   const form = modal.querySelector('#stockForm');
+   const title = modal.querySelector('#stockModalTitle');
+   const quantityInput = modal.querySelector('#stockChange');
+   const currentStockSpan = modal.querySelector('#currentStock');
 
-   // // Set the modal title and action
-   // title.textContent = action === 'add' ? 'Add Stock' : 'Remove Stock';
-   // actionField.value = action;
-   // itemIdField.value = itemId;
+   const itemRow = document.querySelector(`tr[data-id="${itemId}"]`);
+   const currentStock = itemRow ? itemRow.cells[3].textContent : '0';
 
-   // // Get the current stock dynamically
-   // const selectedItem = document.querySelector(`[data-id="${itemId}"]`);
-   // if (selectedItem) {
-   //    currentStock.textContent = selectedItem
-   //       .querySelector('td:nth-child(4)')
-   //       .textContent.trim();
-   // }
+   title.textContent = action === 'add' ? 'Add Stock' : 'Remove Stock';
+   currentStockSpan.textContent = currentStock;
 
-   // // Open the modal
+   form.reset();
+   document.querySelector('#stockAction').value = action;
+   document.querySelector('#stockItemId').value = itemId;
+
+   quantityInput.min = 1;
+   if (action === 'remove') {
+      quantityInput.max = currentStock;
+   } else {
+      quantityInput.removeAttribute('max');
+   }
+
    modal.showModal();
 }
 
-// Close the stock modal
-function closeModal(modalId) {
-   const modal = document.getElementById(modalId);
-   modal.close();
-}
+function validateForm(form) {
+   const requiredFields = form.querySelectorAll('[required]');
+   let isValid = true;
 
-function validateForm(formId) {
-   const form = document.getElementById(formId);
-   const inputs = form.querySelectorAll('[required]');
-   let valid = true;
-
-   inputs.forEach((input) => {
-      if (!input.value.trim()) {
-         valid = false;
-         input.classList.add('error'); // Add a CSS class to highlight the error
+   requiredFields.forEach((field) => {
+      if (!field.value.trim()) {
+         field.classList.add('error');
+         isValid = false;
       } else {
-         input.classList.remove('error');
+         field.classList.remove('error');
       }
    });
 
-   if (!valid) {
-      const errorElement = document.getElementById('formError');
-      if (errorElement) {
-         errorElement.textContent = 'Please fill in all required fields.';
-         errorElement.style.display = 'block';
+   if (
+      form.id === 'stockForm' &&
+      document.querySelector('#stockAction').value === 'remove'
+   ) {
+      const quantity = parseInt(document.querySelector('#stockChange').value);
+      const currentStock = parseInt(
+         document.querySelector('#currentStock').textContent
+      );
+      if (quantity > currentStock) {
+         document.querySelector('#stockChange').classList.add('error');
+         isValid = false;
       }
    }
 
-   return valid;
+   return isValid;
 }
 
-document.querySelectorAll('form').forEach((form) => {
-   form.addEventListener('submit', (e) => {
-      const errorElement = document.getElementById('formError');
-      if (errorElement) errorElement.style.display = 'none';
-      if (!validateForm(form.id)) {
-         e.preventDefault();
-      }
+document.addEventListener('DOMContentLoaded', function () {
+   document.querySelectorAll('form').forEach((form) => {
+      form.addEventListener('submit', function (e) {
+         if (!validateForm(this)) {
+            e.preventDefault();
+         }
+      });
+   });
+
+   document.querySelectorAll('input, select, textarea').forEach((input) => {
+      input.addEventListener('input', function () {
+         if (this.value.trim()) {
+            this.classList.remove('error');
+         }
+      });
    });
 });
+
+function sortTable(columnIndex) {
+   const table = document.querySelector('table');
+   const tbody = table.querySelector('tbody');
+   const rows = Array.from(tbody.querySelectorAll('tr'));
+
+   rows.sort((a, b) => {
+      let aValue = a.cells[columnIndex].textContent;
+      let bValue = b.cells[columnIndex].textContent;
+
+      if (columnIndex === 4) {
+         aValue = parseFloat(aValue.replace('$', ''));
+         bValue = parseFloat(bValue.replace('$', ''));
+      } else if (columnIndex === 3) {
+         aValue = parseInt(aValue);
+         bValue = parseInt(bValue);
+      }
+
+      if (typeof aValue === 'number') {
+         return aValue - bValue;
+      }
+      return aValue.localeCompare(bValue);
+   });
+
+   rows.forEach((row) => tbody.appendChild(row));
+}
