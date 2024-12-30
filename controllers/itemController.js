@@ -5,6 +5,7 @@ const {
    editItem,
    deleteItem,
    updateStock,
+   getItemByCategory,
 } = require('../db/queries');
 
 exports.getItems = async (req, res, next) => {
@@ -29,6 +30,22 @@ exports.getItems = async (req, res, next) => {
       next();
    } catch (err) {
       console.error('Error fetching items:', err.message);
+      res.status(500).send('Internal Server Error');
+   }
+};
+
+exports.getAnItemByCategory = async (req, res) => {
+   const { categoryId } = req.params;
+   try {
+      const item = await getItemByCategory(categoryId);
+
+      if (item.length > 0) {
+         res.json(item[0]);
+      } else {
+         res.json({ specifications: {} });
+      }
+   } catch (err) {
+      console.error('Error fetching item by category:', err.message);
       res.status(500).send('Internal Server Error');
    }
 };
@@ -81,9 +98,21 @@ exports.editItem = async (req, res) => {
 };
 
 exports.deleteItem = async (req, res) => {
-   const { id } = req.params;
-   await deleteItem(id);
-   res.redirect('/');
+   try {
+      const { id } = req.params;
+
+      await deleteItem(id);
+
+      if (req.session.selectedItemId === id) {
+         req.session.selectedItemId = null;
+         req.session.selectedItem = null;
+      }
+
+      res.redirect('/');
+   } catch (err) {
+      console.error('Error deleting item:', err.message);
+      res.status(500).json({ error: 'Internal Server Error' });
+   }
 };
 
 exports.updateStock = async (req, res) => {

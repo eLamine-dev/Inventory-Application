@@ -1,3 +1,5 @@
+const pool = require('./pool');
+
 function selectItem(itemId) {
    const rows = document.querySelectorAll('tbody tr');
    rows.forEach((row) => row.classList.remove('selected'));
@@ -50,45 +52,50 @@ function openItemModal(action, itemId = null) {
    const modal = document.getElementById('itemModal');
    const form = modal.querySelector('form');
    const title = modal.querySelector('#itemModalTitle');
+   const specificationsContainer = document.querySelector(
+      '#specificationsContainer'
+   );
 
    form.reset();
+   specificationsContainer.innerHTML = '';
 
    if (action === 'add') {
       title.textContent = 'Add Item';
       form.setAttribute('method', 'POST');
       form.setAttribute('action', '/items');
+
+      const categorySelect = document.querySelector('#itemCategory');
+      categorySelect.addEventListener('change', async () => {
+         const categoryId = categorySelect.value;
+
+         specificationsContainer.innerHTML = ''; //
+
+         if (categoryId) {
+            const response = await fetch(`items/category-item/${categoryId}`);
+            const data = await response.json();
+            const specifications = data.specifications || {};
+
+            if (Object.keys(specifications).length > 0) {
+               generateSpecificationFields(specifications);
+            } else {
+               addEmptySpecificationField();
+            }
+         }
+      });
+
+      addSpecificationButton();
    } else if (action === 'edit') {
       title.textContent = 'Edit Item';
 
-      const selectedItem = document.querySelector(`tr[data-id="${itemId}"]`);
-      if (selectedItem) {
-         const itemData = {
-            name: selectedItem.cells[0].textContent,
-            category_name: selectedItem.cells[1].textContent,
-            manufacturer_name: selectedItem.cells[2].textContent,
-            stock: selectedItem.cells[3].textContent,
-            price: selectedItem.cells[4].textContent.replace('$', ''),
-         };
-
-         document.querySelector('#itemName').value = itemData.name;
-         document.querySelector('#itemStock').value = itemData.stock;
-         document.querySelector('#itemPrice').value = itemData.price;
-
-         const categorySelect = document.querySelector('#itemCategory');
-         const manufacturerSelect = document.querySelector('#itemManufacturer');
-
-         Array.from(categorySelect.options).forEach((option) => {
-            if (option.textContent === itemData.category_name) {
-               option.selected = true;
-            }
-         });
-
-         Array.from(manufacturerSelect.options).forEach((option) => {
-            if (option.textContent === itemData.manufacturer_name) {
-               option.selected = true;
-            }
-         });
-      }
+      fetch(`/items/specifications/${itemId}`)
+         .then((res) => res.json())
+         .then((data) => {
+            const specifications = data.specifications || {};
+            generateSpecificationFields(specifications);
+         })
+         .catch((err) =>
+            console.error('Error fetching item specifications:', err)
+         );
 
       form.setAttribute('method', 'POST');
       form.setAttribute('action', `/items/${itemId}`);
@@ -98,25 +105,100 @@ function openItemModal(action, itemId = null) {
       methodInput.name = '_method';
       methodInput.value = 'PUT';
       form.appendChild(methodInput);
+
+      addSpecificationButton();
    }
 
    modal.showModal();
 }
 
+function generateSpecificationFields(specifications) {
+   const container = document.querySelector('#specificationsContainer');
+   container.innerHTML = '';
+
+   Object.keys(specifications).forEach((key) => {
+      const div = document.createElement('div');
+      div.classList.add('spec-field');
+
+      const label = document.createElement('label');
+      label.textContent = key;
+      label.setAttribute('for', `spec-${key}`);
+
+      const input = document.createElement('input');
+      input.type = 'text';
+      input.name = `specifications[${key}]`;
+      input.id = `spec-${key}`;
+      input.value = specifications[key] || '';
+
+      div.appendChild(label);
+      div.appendChild(input);
+      container.appendChild(div);
+   });
+}
+
+function addEmptySpecificationField() {
+   const container = document.querySelector('#specificationsContainer');
+
+   const div = document.createElement('div');
+   div.classList.add('spec-field');
+
+   const label = document.createElement('label');
+   label.textContent = 'New Specification';
+   label.setAttribute('for', 'new-spec-key');
+
+   const keyInput = document.createElement('input');
+   keyInput.type = 'text';
+   keyInput.name = 'new_spec_key';
+   keyInput.placeholder = 'Specification Key';
+
+   const valueInput = document.createElement('input');
+   valueInput.type = 'text';
+   valueInput.name = 'new_spec_value';
+   valueInput.placeholder = 'Value';
+
+   div.appendChild(label);
+   div.appendChild(keyInput);
+   div.appendChild(valueInput);
+   container.appendChild(div);
+}
+
+function addSpecificationButton() {
+   const container = document.querySelector('#specificationsContainer');
+
+   const addButton = document.createElement('button');
+   addButton.type = 'button';
+   addButton.textContent = 'Add New Specification';
+   addButton.onclick = addEmptySpecificationField;
+
+   container.appendChild(addButton);
+}
+
 function openDeleteItemModal(itemId, itemName) {
    const modal = document.getElementById('deleteItemModal');
-   const form = modal.querySelector('form');
    const title = modal.querySelector('#deleteItemModalTitle');
+   const confirmButton = modal.querySelector('#deleteItemConfirm');
 
    title.textContent = `Delete Item: ${itemName}`;
-   form.setAttribute('method', 'POST');
-   form.setAttribute('action', `/items/${itemId}`);
 
-   const methodInput = document.createElement('input');
-   methodInput.type = 'hidden';
-   methodInput.name = '_method';
-   methodInput.value = 'DELETE';
-   form.appendChild(methodInput);
+   const newConfirmButton = confirmButton.cloneNode(true);
+   confirmButton.parentNode.replaceChild(newConfirmButton, confirmButton);
+
+   newConfirmButton.addEventListener('click', async () => {
+      try {
+         const response = await fetch(`/items/${itemId}`, {
+            method: 'DELETE',
+            headers: {
+               'Content-Type': 'application/json',
+            },
+         });
+
+         modal.close();
+         window.location.href = '/';
+      } catch (error) {
+         console.error('Error:', error);
+         alert('Failed to delete item');
+      }
+   });
 
    modal.showModal();
 }

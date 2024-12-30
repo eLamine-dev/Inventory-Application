@@ -6,6 +6,7 @@ const {
    deleteItem,
    updateStock,
    selectItem,
+   getAnItemByCategory,
 } = require('../controllers/itemController');
 
 const router = express.Router();
@@ -17,5 +18,7 @@ router.delete('/:id', deleteItem);
 router.post('/update-stock', updateStock);
 
 router.post('/select-item/:itemId', selectItem);
+
+router.get('/category-item/:categoryId', getAnItemByCategory);
 
 module.exports = router;

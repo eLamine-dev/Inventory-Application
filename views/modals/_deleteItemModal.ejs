@@ -1,19 +1,17 @@
 <dialog id="deleteItemModal">
-   <form method="dialog">
-      <h5 id="deleteItemModalTitle">Delete Item</h5>
-      <p>Are you sure you want to delete this item?</p>
+   <h5 id="deleteItemModalTitle">Delete Item</h5>
+   <p>Are you sure you want to delete this item?</p>
 
-      <menu>
-         <button
-            value="cancel"
-            class="secondary"
-            onclick='closest("dialog").close()'
-         >
-            Cancel
-         </button>
-         <button id="deleteItemConfirm" type="submit" class="danger">
-            Delete
-         </button>
-      </menu>
-   </form>
+   <menu>
+      <button
+         type="button"
+         class="secondary"
+         onclick="closeModal('deleteItemModal')"
+      >
+         Cancel
+      </button>
+      <button id="deleteItemConfirm" type="button" class="danger">
+         Delete
+      </button>
+   </menu>
 </dialog>

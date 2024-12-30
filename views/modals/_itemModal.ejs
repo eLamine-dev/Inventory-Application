@@ -12,7 +12,12 @@
       <input type="number" id="itemStock" name="stock" required />
 
       <label for="itemCategory">Category:</label>
-      <select id="itemCategory" name="category_id" required>
+      <select
+         id="itemCategory"
+         name="category_id"
+         onchange="getCategorySpecifications(this.value)"
+         required
+      >
          <% categories.forEach(category => { %>
          <option value="<%= category.id %>"><%= category.name %></option>
          <% }); %>
@@ -27,12 +32,7 @@
          <% }); %>
       </select>
 
-      <label for="itemSpecifications">Specifications (JSON):</label>
-      <textarea
-         id="itemSpecifications"
-         name="specifications"
-         rows="4"
-      ></textarea>
+      <div id="specificationsContainer"></div>
 
       <menu>
          <button

@@ -43,7 +43,6 @@ exports.handleCategoryDeletionQueries = {
    deleteCategory: (id) => query('DELETE FROM categories WHERE id = $1', [id]),
 };
 
-// Items
 exports.getAllItems = () =>
    query(
       `SELECT items.*, categories.name AS category_name, manufacturers.name AS manufacturer_name 
@@ -57,9 +56,14 @@ exports.getItemsByCategory = (categoryId) =>
        FROM items
        LEFT JOIN categories ON items.category_id = categories.id
        LEFT JOIN manufacturers ON items.manufacturer_id = manufacturers.id
-       WHERE items.category_id = $1`,
+       WHERE items.category_id = $1
+       ORDER BY items.name`,
       [categoryId]
    );
+
+exports.getItemByCategory = (categoryId) =>
+   query('SELECT * FROM items WHERE category_id = $1 LIMIT 1', [categoryId]);
+
 exports.getItemById = (id) =>
    query(
       `SELECT items.*, categories.name AS category_name, manufacturers.name AS manufacturer_name 
